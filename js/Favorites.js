@@ -12,22 +12,17 @@ export class GithubUser {
       }))
   }
 }
+
 // classe que vai conter a lógica dos dados
 // como os dados serão estruturados
 export class Favorites {
   constructor(root) {
     this.root = document.querySelector(root)
     this.load()
-
-    GithubUser.search("maykbrito").then(user => console.log(user))
   }
-  //a função load vai funcionar para carregamento dos dados
+
   load() {
     this.entries = JSON.parse(localStorage.getItem("@github-favorites:")) || []
-  }
-
-  add(username) {
-    console.log(username)
   }
 
   delete(user) {
@@ -39,6 +34,7 @@ export class Favorites {
     this.update()
   }
 }
+
 // classe que vai criar a visualização e eventos do HTML
 export class FavoritesView extends Favorites {
   constructor(root) {
@@ -47,22 +43,12 @@ export class FavoritesView extends Favorites {
     this.tbody = this.root.querySelector("table tbody")
 
     this.update()
-    this.onadd()
-  }
-
-  onadd() {
-    const addButton = this.root.querySelector(".search button")
-    addButton.onclick = () => {
-      const { value } = this.root.querySelector(".search input")
-
-      this.add(value)
-    }
   }
 
   update() {
     this.removeAllTr()
 
-    this.entries.forEach(function (user) {
+    this.entries.forEach(user => {
       const row = this.createRow()
 
       row.querySelector(
@@ -89,30 +75,28 @@ export class FavoritesView extends Favorites {
     const tr = document.createElement("tr")
 
     tr.innerHTML = `
-    <td class="user">
-      <img
-        src="https://github.com/DevVictorDantas.png"
-        alt="Imagem de Victor Dantas"
-      />
-      <a href="https://github.com/DevVictorDantas" target="_blank">
-        <p>Victor Dantas</p>
-        <span>DevVictorDantas</span>
-      </a>
-    </td>
-    <td class="repositories">12</td>
-    <td class="followers">0</td>
-    <td>
-      <button class="remove">&times;</button>
-    </td>
+      <td class="user">
+        <img src="https://github.com/maykbrito.png" alt="Imagem de maykbrito">
+        <a href="https://github.com/maykbrito" target="_blank">
+          <p>Mayk Brito</p>
+          <span>maykbrito</span>
+        </a>
+      </td>
+      <td class="repositories">
+        76
+      </td>
+      <td class="followers">
+        9589
+      </td>
+      <td>
+        <button class="remove">&times;</button>
+      </td>
     `
+
     return tr
   }
-  //função removeAllTr remove todas as Tr's do tbody quando
-  //a mesma for chamada pela função updade()
-  removeAllTr() {
-    const tbody = this.root.querySelector("table tbody")
 
-    // forEach faz a função ser executada para cada tr do tbody
+  removeAllTr() {
     this.tbody.querySelectorAll("tr").forEach(tr => {
       tr.remove()
     })
